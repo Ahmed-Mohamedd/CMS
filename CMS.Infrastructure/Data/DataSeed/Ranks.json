@@ -1,0 +1,58 @@
+[
+    {
+        "Name": "لا يوجد",
+        "RankType": "Civilian"
+    },
+    {
+        "Name": "جندي",
+        "RankType": "Soldier"
+    },
+    {
+        "Name": "عريف",
+        "RankType": "Nco"
+    },
+    {
+        "Name": "رقيب",
+        "RankType": "Nco"
+    },
+    {
+        "Name": "رقيب أ",
+        "RankType": "Nco"
+    },
+    {
+        "Name": "مساعد",
+        "RankType": "Nco"
+    },
+    {
+        "Name": "مساعد أ",
+        "RankType": "Nco"
+    },
+    {
+        "Name": "ملازم",
+        "RankType": "Officer"
+    },
+    {
+        "Name": "ملازم أ",
+        "RankType": "Officer"
+    },
+    {
+        "Name": "نقيب",
+        "RankType": "Officer"
+    },
+    {
+        "Name": "رائد",
+        "RankType": "Officer"
+    },
+    {
+        "Name": "مقدم",
+        "RankType": "Officer"
+    },
+    {
+        "Name": "عقيد",
+        "RankType": "Officer"
+    },
+    {
+        "Name": "عميد",
+        "RankType": "Officer"
+    }
+]
