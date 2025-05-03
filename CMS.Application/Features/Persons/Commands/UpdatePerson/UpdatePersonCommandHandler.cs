@@ -27,7 +27,6 @@ namespace CMS.Application.Features.Persons.Commands.UpdatePerson
             person.BirthDate = request.Dto.BirthDate;
             person.Governorate = request.Dto.Governorate;
             person.District = request.Dto.District;
-            person.Village = request.Dto.Village;
             person.Street = request.Dto.Street;
             person.PhoneNumber = request.Dto.PhoneNumber;
             person.Email = request.Dto.Email;

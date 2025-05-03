@@ -13,10 +13,10 @@ namespace CMS.Application.Features.Persons.DTOs
      string MilitaryNumber,
      string NationalId,
      DateTime BirthDate,
+     DateTime? JoinDateToUnit,
 
      string Governorate,
      string District,
-     string Village,
      string? Street,
 
      string PhoneNumber,

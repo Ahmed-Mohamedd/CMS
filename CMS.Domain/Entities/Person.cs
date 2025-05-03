@@ -14,11 +14,10 @@ namespace CMS.Domain.Entities
         public string MilitaryNumber { get; set; }
         public string NationalId { get; set; }
         public DateTime BirthDate { get; set; }
-        public DateTime JoinDateToUnit { get; set; } = DateTime.Now;
+        public DateTime? JoinDateToUnit { get; set; } 
 
         public string Governorate { get; set; }
         public string District { get; set; }
-        public string Village { get; set; }
         public string? Street { get; set; }
 
         public string PhoneNumber { get; set; }

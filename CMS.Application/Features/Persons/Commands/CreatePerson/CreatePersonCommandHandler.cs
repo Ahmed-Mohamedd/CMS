@@ -24,7 +24,6 @@ namespace CMS.Application.Features.Persons.Commands.CreatePerson
                 BirthDate = request.Person.BirthDate,
                 Governorate = request.Person.Governorate,
                 District = request.Person.District,
-                Village = request.Person.Village,
                 Street = request.Person.Street,
                 Email = request.Person.Email,
                 PhoneNumber = request.Person.PhoneNumber,

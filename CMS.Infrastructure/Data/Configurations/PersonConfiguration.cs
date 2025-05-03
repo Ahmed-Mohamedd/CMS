@@ -37,7 +37,6 @@ namespace CMS.Infrastructure.Data.Configurations
 
             builder.Property(p => p.Governorate).HasMaxLength(100).IsUnicode(true);
             builder.Property(p => p.District).HasMaxLength(100).IsUnicode(true);
-            builder.Property(p => p.Village).HasMaxLength(100).IsUnicode(true);
             builder.Property(p => p.Street).HasMaxLength(100).IsUnicode(true);
             builder.Property(p => p.PhoneNumber).HasMaxLength(20).IsUnicode(true);
             builder.Property(p => p.Email).HasMaxLength(100);
