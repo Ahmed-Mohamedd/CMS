@@ -13,7 +13,7 @@ namespace CMS.Domain.Entities.LeaveEntities
         public Guid PersonId { get; set; }
         public Person Person { get; set; } = default!;
 
-        public Guid LeaveTypeId { get; set; }
+        public int LeaveTypeId { get; set; }
         public LeaveType LeaveType { get; set; } = default!;
 
         public int TakenDays { get; set; }

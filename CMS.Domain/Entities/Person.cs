@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CMS.Domain.Entities.LeaveEntities;
 
 namespace CMS.Domain.Entities
 {
@@ -31,5 +32,8 @@ namespace CMS.Domain.Entities
         public Rank Rank { get; set; }
         public int PersonTypeId { get; set; }
         public PersonType PersonType { get; set; }
+
+        public ICollection<Leave> Leaves { get; set; } = new List<Leave>();
+        public ICollection<LeaveBalance> LeaveBalances { get; set; } = new List<LeaveBalance>();
     }
 }
