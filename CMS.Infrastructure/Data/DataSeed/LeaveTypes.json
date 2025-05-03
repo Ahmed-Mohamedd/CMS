@@ -1,0 +1,73 @@
+[
+    {
+        "Name": "مرضية",
+        "Description": "بسبب مرض، بناءً على تقرير طبي.",
+        "IsForSoldier": true,
+        "IsForOfficer": true,
+        "IsForNCO": true
+    },
+    {
+
+        "Name": "ميدانية",
+        "Description": "تصل مدتها الي اسبوع",
+        "IsForSoldier": true,
+        "IsForOfficer": true,
+        "IsForNCO": true
+    },
+    {
+
+        "Name": "راحة",
+        "Description": "قصيرة جدًا، غالبًا يومين أو ثلاثة للراحة.",
+        "IsForSoldier": true,
+        "IsForOfficer": true,
+        "IsForNCO": true
+    },
+    {
+
+        "Name": "دراسية",
+        "Description": "إذا كان الفرد بيحضر دراسة معتمدة",
+        "IsForSoldier": true,
+        "IsForOfficer": true,
+        "IsForNCO": true
+    },
+    {
+
+        "Name": "استثنائية",
+        "Description": "مثل الظروف العائلية أو مناسبات خاصة (زواج، وفاة، مولود... إلخ).",
+        "IsForSoldier": true,
+        "IsForOfficer": true,
+        "IsForNCO": true
+    },
+    {
+
+        "Name": "مأمورية",
+        "Description": "خروج بإذن لمهام رسمية وليس إجازة حرة.",
+        "IsForSoldier": true,
+        "IsForOfficer": true,
+        "IsForNCO": true
+    },
+    {
+
+        "Name": "مبيت",
+        "Description": "خروج بعد الدوام",
+        "IsForSoldier": true,
+        "IsForOfficer": true,
+        "IsForNCO": true
+    },
+    {
+
+        "Name": "عارضة",
+        "Description": "إجازة قصيرة, للفرد الواحد سبعة ايام في السنة ,متاحة للظباط وصف الظباط فقط",
+        "IsForSoldier": false,
+        "IsForOfficer": true,
+        "IsForNCO": true
+    },
+    {
+
+        "Name": "سنوية",
+        "Description": "الإجازة السنوية المسموح بها للفرد,لكل فرد 30 يوم في السنة مقسمة الي 15 لكل ستةاشهر,متاحة للظباط وصف الظباط فقط.",
+        "IsForSoldier": false,
+        "IsForOfficer": true,
+        "IsForNCO": true
+    }
+]

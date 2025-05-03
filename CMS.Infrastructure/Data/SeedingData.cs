@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using CMS.Domain.Entities;
+using CMS.Domain.Entities.LeaveEntities;
 using Microsoft.Extensions.Logging;
 
 namespace CMS.Infrastructure.Data
@@ -21,6 +22,14 @@ namespace CMS.Infrastructure.Data
                     var Branches = JsonSerializer.Deserialize<List<Branch>>(BranchesData);
                     await context.Set<Branch>().AddRangeAsync(Branches);
           
+                    await context.SaveChangesAsync();
+                }
+                if (!context.LeaveType.Any())
+                {
+                    var LeaveTypesData = await File.ReadAllTextAsync("../CMS.Infrastructure/Data/DataSeed/LeaveTypes.json");
+                    var LeaveTypes = JsonSerializer.Deserialize<List<LeaveType>>(LeaveTypesData);
+                    await context.Set<LeaveType>().AddRangeAsync(LeaveTypes);
+
                     await context.SaveChangesAsync();
                 }
                 if (!context.PersonTypes.Any())
