@@ -23,5 +23,7 @@ namespace CMS.Domain.Entities.LeaveEntities
 
         public string? Notes { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public int Year { get; set; } = (int)DateTime.Now.Year;
     }
 }
