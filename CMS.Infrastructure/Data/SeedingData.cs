@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using CMS.Domain.Entities;
 using CMS.Domain.Entities.LeaveEntities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace CMS.Infrastructure.Data
@@ -16,7 +17,7 @@ namespace CMS.Infrastructure.Data
         {
             try
             {
-                if (!context.Branches.Any())
+                if (!await context.Branches.AnyAsync())
                 {
                     var BranchesData = await File.ReadAllTextAsync("../CMS.Infrastructure/Data/DataSeed/Branches.json");
                     var Branches = JsonSerializer.Deserialize<List<Branch>>(BranchesData);
@@ -24,7 +25,7 @@ namespace CMS.Infrastructure.Data
           
                     await context.SaveChangesAsync();
                 }
-                if (!context.LeaveType.Any())
+                if (!await context.LeaveType.AnyAsync())
                 {
                     var LeaveTypesData = await File.ReadAllTextAsync("../CMS.Infrastructure/Data/DataSeed/LeaveTypes.json");
                     var LeaveTypes = JsonSerializer.Deserialize<List<LeaveType>>(LeaveTypesData);
@@ -32,7 +33,7 @@ namespace CMS.Infrastructure.Data
 
                     await context.SaveChangesAsync();
                 }
-                if (!context.PersonTypes.Any())
+                if (!await context.PersonTypes.AnyAsync())
                 {
                     var PersonTypesData = await File.ReadAllTextAsync("../CMS.Infrastructure/Data/DataSeed/PersonTypes.json");
                     var PersonTypes = JsonSerializer.Deserialize<List<PersonType>>(PersonTypesData);
@@ -43,7 +44,7 @@ namespace CMS.Infrastructure.Data
                     await context.SaveChangesAsync();
                 }
 
-                if (!context.Ranks.Any())
+                if (!await context.Ranks.AnyAsync())
                 {
                     var RanksData = await File.ReadAllTextAsync("../CMS.Infrastructure/Data/DataSeed/Ranks.json");
                     var Ranks = JsonSerializer.Deserialize<List<Rank>>(RanksData);
