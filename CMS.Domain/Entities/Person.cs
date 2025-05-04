@@ -22,7 +22,7 @@ namespace CMS.Domain.Entities
 
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-
+        public bool IsAbsent { get; set; }
 
 
         public int BranchId { get; set; }

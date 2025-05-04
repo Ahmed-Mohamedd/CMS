@@ -9,6 +9,7 @@ using CMS.Application.Features.Persons.DTOs;
 using CMS.Domain.Entities;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace CMS.Application.Features.Persons.Queries.GetPersonById
 {
@@ -17,6 +18,7 @@ namespace CMS.Application.Features.Persons.Queries.GetPersonById
         public async Task<PersonDto> Handle(GetPersonByIdQuery request, CancellationToken cancellationToken)
         {
             var person = await context.Persons
+            .AsNoTracking()
             .Include(p => p.PersonType)
             .Include(p => p.Branch)
             .Include(p => p.Rank)
@@ -25,7 +27,35 @@ namespace CMS.Application.Features.Persons.Queries.GetPersonById
             //if (person == null)
             //    throw new NotFoundException(nameof(Person), request.Id);
 
-           return person.Adapt<PersonDto>();
+            var PersonDto = person.Adapt<PersonDto>();
+            return await GetPersonWithHisSpecificAttributes(PersonDto , person.PersonTypeId);
+        }
+
+        private async Task<PersonDto> GetPersonWithHisSpecificAttributes(PersonDto dto , int PersonTypeId)
+        {
+            PersonDto SpecifiedDto = null;
+            if (PersonTypeId == 1)
+            {
+                var soldier = await context.Soldiers
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(s => s.PersonId == dto.Id);
+               
+                 SpecifiedDto = dto with { MilitaryServiceEndDate = soldier.MilitaryServiceEndDate };
+            }
+            //else if (PersonTypeId == 2)
+            //{
+            //    return nco.Adapt<PersonDto>();
+            //}
+            //else if (PersonTypeId == 3)
+            //{
+            //    return soldier.Adapt<PersonDto>();
+            //}
+            //else
+            //{
+
+            //}
+
+            return SpecifiedDto;
         }
     }
 }

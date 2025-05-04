@@ -25,7 +25,7 @@ namespace CMS.Application.Features.Persons.Commands.CreatePerson
             RuleFor(x => x.Person.BranchId).NotNull().WithMessage("Branch is required");
             RuleFor(x => x.Person.RankId)
                 .NotNull().WithMessage("Rank is required")
-                .When(x => x.Person.PersonTypeId == 2 || x.Person.PersonTypeId == 3);
+                .When(x =>  x.Person.PersonTypeId == 1 || x.Person.PersonTypeId == 2 || x.Person.PersonTypeId == 3);
 
         }
     }

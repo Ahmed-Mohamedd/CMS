@@ -14,7 +14,7 @@ namespace CMS.Application.Features.Persons.DTOs
      string NationalId,
      DateTime BirthDate,
      DateTime? JoinDateToUnit,
-
+     DateTime? MilitaryServiceEndDate,
      string Governorate,
      string District,
      string? Street,

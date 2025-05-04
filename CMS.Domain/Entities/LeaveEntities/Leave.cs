@@ -17,12 +17,12 @@ namespace CMS.Domain.Entities.LeaveEntities
         public LeaveType LeaveType { get; set; } = default!;
 
         public DateTime DepartDate { get; set; }
-        public int DepartHour { get; set; }
+        public int? DepartHour { get; set; }
         public DateTime ReturnDate { get; set; }
-        public int ReturnHour { get; set; }
+        public int? ReturnHour { get; set; }
 
         public string? Notes { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public int Year { get; set; } = (int)DateTime.Now.Year;
     }
