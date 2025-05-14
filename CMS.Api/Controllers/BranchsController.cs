@@ -60,10 +60,9 @@ namespace CMS.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBranchs()
+        public async Task<IActionResult> GetBranchs([FromQuery] GetBranchsQuery getBranchQuery)
         {
-            var command = new GetBranchsQuery();
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(getBranchQuery);
             return Ok(result);
         }
 

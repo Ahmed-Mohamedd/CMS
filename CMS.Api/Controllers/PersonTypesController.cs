@@ -29,10 +29,9 @@ namespace CMS.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllPersonTypes()
+        public async Task<IActionResult> GetAllPersonTypes([FromQuery] GetPersonTypesQuery getPersonTypesQuery)
         {
-            var command = new GetPersonTypesQuery();
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(getPersonTypesQuery);
 
             return Ok(result);
         }
