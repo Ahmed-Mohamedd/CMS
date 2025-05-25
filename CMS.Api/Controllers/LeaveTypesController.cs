@@ -4,37 +4,42 @@ using CMS.Application.Features.Branches.Commands.UpdateBranch;
 using CMS.Application.Features.Branches.DTOs;
 using CMS.Application.Features.Branches.Queries.GetBranchById;
 using CMS.Application.Features.Branches.Queries.GetBranchs;
-using CMS.Application.Features.Branches.Queries.GetPersonsWithSpecificBranch;
+using CMS.Application.Features.LeaveTypes.Commands.CreateLeaveType;
+using CMS.Application.Features.LeaveTypes.Commands.DeleteLeaveType;
+using CMS.Application.Features.LeaveTypes.Commands.UpdateLeaveType;
+using CMS.Application.Features.LeaveTypes.DTOs;
+using CMS.Application.Features.LeaveTypes.Queries.GetLeaveTypeById;
+using CMS.Application.Features.LeaveTypes.Queries.GetLeaveTypes;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMS.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BranchsController : ControllerBase
+    public class LeaveTypesController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public BranchsController(IMediator mediator)
+        public LeaveTypesController(IMediator mediator)
         {
             _mediator = mediator;
         }
+
         [HttpPost]
-        public async Task<IActionResult> Create(CreateBranchDto dto)
+        public async Task<IActionResult> Create(CreateLeaveTypeDto dto)
         {
-            var command = new CreateBranchCommand(dto);
+            var command = new CreateLeaveTypeCommand(dto);
             var result = await _mediator.Send(command);
 
             return Ok(result);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateBranchDto dto)
+        public async Task<IActionResult> Update(int id, CreateLeaveTypeDto dto)
         {
-            var command = new UpdateBranchCommand(id, dto);
+            var command = new UpdateLeaveTypeCommand(id, dto);
             var result = await _mediator.Send(command);
             return result ? Ok() : NotFound();
         }
@@ -42,37 +47,28 @@ namespace CMS.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var command = new DeleteBranchCommand(id);
+            var command = new DeleteLeaveTypeCommand(id);
             var result = await _mediator.Send(command);
             if (result == true)
                 return Ok(result);
-            return BadRequest($"Can't delete branch with id {id}"); 
+            return BadRequest($"Can't delete leave type with id {id}");
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBranchById(int id)
+        public async Task<IActionResult> GetLeaveTypeById(int id)
         {
-            var command = new GetBranchByIdQuery(id);
+            var command = new GetLeaveTypeByIdQuery(id);
             var result = await _mediator.Send(command);
             if (result != null)
                 return Ok(result);
-            return BadRequest($"Can't Get Bransh with Id {id}");
+            return BadRequest($"Can't Get Leave Type with Id {id}");
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBranchs([FromQuery] GetBranchsQuery getBranchQuery)
+        public async Task<IActionResult> GetLeaveTypes([FromQuery] GetLeaveTypesQuery getLeaveTypesQuery)
         {
-            var result = await _mediator.Send(getBranchQuery);
+            var result = await _mediator.Send(getLeaveTypesQuery);
             return Ok(result);
         }
-
-        [HttpGet("GetPersonsWithBranchId/{id}")]
-        public async Task<IActionResult> GetPersonsWithBranchId(int id)
-        {
-            var command = new GetPersonsWithSpecificBranchIdQuery(id);
-            var result = await _mediator.Send(command);
-            return Ok(result);
-        }
-
     }
 }

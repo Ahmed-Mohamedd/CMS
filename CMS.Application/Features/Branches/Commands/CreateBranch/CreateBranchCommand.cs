@@ -17,7 +17,7 @@ namespace CMS.Application.Features.Branches.Commands.CreateBranch
     {
         public CreateBranchCommandValidator()
         {
-            RuleFor(x => x.Branch).NotEmpty().WithMessage("Name is required");
+            RuleFor(x => x.Branch.Name).NotEmpty().WithMessage("Name is required");
         }
     }
 }
