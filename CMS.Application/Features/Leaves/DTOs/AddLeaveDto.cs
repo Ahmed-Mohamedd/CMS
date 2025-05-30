@@ -9,7 +9,7 @@ namespace CMS.Application.Features.Leaves.DTOs
 {
     public record  AddLeaveDto
     (
-        Guid PersonId,
+        List<Guid> PersonIds,
      int LeaveTypeId,
 
      DateTime DepartDate,
