@@ -22,7 +22,7 @@ namespace CMS.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateLeave([FromBody] AddLeaveDto dto)
         {
-            var command = new AddLeaveCommand(dto);
+            var command = new AddAllTypesOfLeaveExceptAnnualandCasualCommand(dto);
             var result = await _mediator.Send(command);
             if(result == 0)
                 return BadRequest("Failed to create leave request. As The person Not Eligable For this leave");

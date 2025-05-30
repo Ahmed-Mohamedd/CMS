@@ -1,0 +1,90 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - master
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-and-validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check PR branch name
+        shell: bash
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          echo "Checking branch name: $BRANCH_NAME"
+          if [[ ! "$BRANCH_NAME" =~ ^(feature|bug-fix)/[a-z0-9-]+$ ]]; then
+            echo "❌ Invalid branch name: $BRANCH_NAME"
+            echo "Branch names must follow the pattern: feature/your-branch-name or bug-fix/your-branch-name"
+            exit 1
+          else
+            echo "✅ Branch name is valid: $BRANCH_NAME"
+          fi
+      
+      - name: Check number of changed files
+        shell: bash
+        run: |
+          CHANGED_FILES=$(git diff --name-only origin/development HEAD | wc -l)
+          if [ $CHANGED_FILES -gt 25 ]; then
+            echo "❌ Pull request contains more than 25 changed files ($CHANGED_FILES files)"
+            echo "Please split your changes into smaller, more manageable pull requests"
+            exit 1
+          else
+            echo "✅ Number of changed files ($CHANGED_FILES) is within acceptable range"
+          fi
+
+      - name: Validate commit messages
+        shell: bash
+        run: |
+          INVALID_COMMITS=$(git log origin/development..HEAD --pretty=format:"%s" | grep -E "^(\.\.\.|-+|\s*)$" || true)
+          if [[ ! -z "$INVALID_COMMITS" ]]; then
+            echo "❌ Invalid commit messages found:"
+            echo "$INVALID_COMMITS"
+            echo "Commit messages must be meaningful and not just dots or dashes."
+            exit 1
+          else
+            echo "✅ All commit messages are valid."
+          fi
+
+      - name: Validate PR title and description
+        shell: bash
+        env:
+          PR_TITLE: "${{ github.event.pull_request.title }}"
+          PR_BODY: "${{ github.event.pull_request.body }}"
+        run: |
+          if [[ -z "$PR_TITLE" || "$PR_TITLE" =~ ^(\.\.\.|-+|\s*)$ ]]; then
+            echo "❌ PR title is invalid or empty. It must be meaningful."
+            exit 1
+          fi
+          if [[ -z "$PR_BODY" || "$PR_BODY" =~ ^(\.\.\.|-+|\s*)$ ]]; then
+            echo "❌ PR description is invalid or empty. It must provide useful details."
+            exit 1
+          fi
+          echo "✅ PR title and description are valid."
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Build and Test
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Building solution: ./IClothes.APIGateway/IClothes.sln"
+          dotnet restore ./IClothes.APIGateway/IClothes.sln
+          if [ $? -eq 0 ]; then 
+            dotnet build ./IClothes.APIGateway/IClothes.sln --no-restore --configuration Release
+            if [ $? -eq 0 ]; then
+              dotnet test ./IClothes.APIGateway/IClothes.sln --no-build --verbosity normal --configuration Release
+            fi
+          fi
+          if [ $? -ne 0 ]; then exit 1; fi

@@ -12,13 +12,13 @@ using FluentValidation;
 
 namespace CMS.Application.Features.Leaves.Commands.AddLeave
 {
-    public  record AddLeaveCommand(AddLeaveDto Dto) : ICommand<int>;
+    public  record AddAllTypesOfLeaveExceptAnnualandCasualCommand(AddLeaveDto Dto) : ICommand<int>;
 
-    public class AddLeaveCommandValidator : AbstractValidator<AddLeaveCommand>
+    public class AddAllTypesOfLeaveExceptAnnualandCasualCommandValidator : AbstractValidator<AddAllTypesOfLeaveExceptAnnualandCasualCommand>
     {
-        public AddLeaveCommandValidator()
+        public AddAllTypesOfLeaveExceptAnnualandCasualCommandValidator()
         {
-            RuleFor(x => x.Dto.PersonId)
+            RuleFor(x => x.Dto.PersonIds)
                 .NotEmpty()
                 .WithMessage("Person ID is required.");
             RuleFor(x => x.Dto.LeaveTypeId)
