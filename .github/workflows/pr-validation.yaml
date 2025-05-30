@@ -79,12 +79,12 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           echo "Current directory: $(pwd)"
-          echo "Building solution: ./IClothes.APIGateway/IClothes.sln"
-          dotnet restore ./IClothes.APIGateway/IClothes.sln
+          echo "Building solution: ./CMS.Api/CMS.sln"
+          dotnet restore ./CMS.Api/CMS.sln
           if [ $? -eq 0 ]; then 
-            dotnet build ./IClothes.APIGateway/IClothes.sln --no-restore --configuration Release
+            dotnet build ./CMS.Api/CMS.sln --no-restore --configuration Release
             if [ $? -eq 0 ]; then
-              dotnet test ./IClothes.APIGateway/IClothes.sln --no-build --verbosity normal --configuration Release
+              dotnet test ./CMS.Api/CMS.sln --no-build --verbosity normal --configuration Release
             fi
           fi
           if [ $? -ne 0 ]; then exit 1; fi
