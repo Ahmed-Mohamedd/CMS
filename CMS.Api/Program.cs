@@ -1,17 +1,25 @@
 using System.Reflection;
 using CMS.Application.Common.Behaviors;
 using CMS.Application.Common.Exceptions.Handler;
+using CMS.Application.Features.Leaves.Utilities;
 using CMS.Application.Features.Persons.Commands.CreatePerson;
 using CMS.Application.Features.Persons.Mapping;
 using CMS.Domain.Interfaces;
 using CMS.Infrastructure.Data;
 using CMS.Infrastructure.Repositories;
+using Hangfire;
 using HealthChecks.UI.Client;
 using Mapster;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add Hangfire services
+builder.Services.AddHangfire(config =>
+    config.UseSqlServerStorage(builder.Configuration.GetConnectionString("MSSQlConnection")));
+
+builder.Services.AddHangfireServer();
 
 // Add services to the container.
 
@@ -41,11 +49,27 @@ builder.Services.AddHealthChecks()    // adding health checks for mssqldb
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
+builder.Services.AddScoped<LeaveBalanceResetJob>();
+
 var app = builder.Build();
+
+// Enable Hangfire dashboard 
+app.UseHangfireDashboard();
+
+// Schedule the job to run yearly on July 1st at midnight
+RecurringJob.AddOrUpdate<LeaveBalanceResetJob>(
+    "reset-annual-leaves",
+    job => job.ResetAnnualLeaveBalancesAsync(),
+    "0 0 1 7 *", // Cron expression
+    new RecurringJobOptions
+    {
+        TimeZone = TimeZoneInfo.Local
+    }
+);
 
 #region Update db
 
-        using var scope = app.Services.CreateScope();     
+using var scope = app.Services.CreateScope();     
         var services = scope.ServiceProvider;            
 
         var LoggerFactory = services.GetRequiredService<ILoggerFactory>();

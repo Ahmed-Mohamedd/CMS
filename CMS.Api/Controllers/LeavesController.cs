@@ -1,4 +1,5 @@
-﻿using CMS.Application.Features.Leaves.Commands.AddCasualLeave;
+﻿using CMS.Application.Features.Leaves.Commands.AddAnnualLeave;
+using CMS.Application.Features.Leaves.Commands.AddCasualLeave;
 using CMS.Application.Features.Leaves.Commands.AddLeave;
 using CMS.Application.Features.Leaves.Commands.DeleteLeave;
 using CMS.Application.Features.Leaves.Commands.UpdateLeave;
@@ -41,6 +42,18 @@ namespace CMS.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("AddAnnualLeaveForOff")]
+        public async Task<IActionResult> AddAnnualLeave([FromBody] AddAnnualLeaveDto dto)
+        {
+            var command = new AddAnnualLeaveCommand(dto);
+            var result = await _mediator.Send(command);
+            if (result == 0)
+                return BadRequest("Failed to add annual leave for this person");
+
+            return Ok(result);
+        }
+
         [HttpPut("{Id}")]
         public async Task<IActionResult> UpdateLeave( int Id ,[FromBody] UpdateLeaveDto dto)
         {

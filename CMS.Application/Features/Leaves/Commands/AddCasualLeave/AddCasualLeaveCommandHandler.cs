@@ -22,11 +22,13 @@ namespace CMS.Application.Features.Leaves.Commands.AddCasualLeave
                                       .Include(c => c.LeaveBalances)
                                       .FirstOrDefaultAsync(p => p.Id == request.dto.PersonId);
 
+            var leaveType = await context.LeaveType.FirstOrDefaultAsync(x => x.Name == "عارضة");
+
             //check if leaveType allowed for this person
-            if (await Helper.IsLeaveTypeAllowedForPerson(8, person!.PersonTypeId, context))
+            if (await Helper.IsLeaveTypeAllowedForPerson(leaveType!.Id, person!.PersonTypeId, context))
             {
                 //check for his leave balance
-                var leaveBalance = person.LeaveBalances.FirstOrDefault(x => x.LeaveTypeId == 8);
+                var leaveBalance = person.LeaveBalances.FirstOrDefault(x => x.LeaveTypeId == leaveType.Id);
                 var availableBalance = leaveBalance!.TotalDays - leaveBalance.TakenDays;
 
                 if (availableBalance > 0)
@@ -34,7 +36,7 @@ namespace CMS.Application.Features.Leaves.Commands.AddCasualLeave
                     var leave = new Leave
                     {
                         PersonId = person.Id,
-                        LeaveTypeId = 8,
+                        LeaveTypeId = leaveType.Id,
                         DepartDate = request.dto.DepartDate,
                         DepartHour = request.dto.DepartHour,
                         ReturnDate = request.dto.ReturnDate,
