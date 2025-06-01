@@ -1,4 +1,5 @@
 using System.Reflection;
+using CMS.Api;
 using CMS.Application.Common.Behaviors;
 using CMS.Application.Common.Exceptions.Handler;
 using CMS.Application.Features.Leaves.Utilities;
@@ -7,6 +8,7 @@ using CMS.Application.Features.Persons.Mapping;
 using CMS.Domain.Interfaces;
 using CMS.Infrastructure.Data;
 using CMS.Infrastructure.Repositories;
+using CMS.Infrastructure.Services;
 using Hangfire;
 using HealthChecks.UI.Client;
 using Mapster;
@@ -30,6 +32,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IApplicationDbContext), typeof(ApplicationDbContext));
+builder.Services.AddScoped(typeof(ILeaveService), typeof(LeaveService));
+builder.Services.AddScoped<LeaveCheckJob>();
 
 TypeAdapterConfig.GlobalSettings.Scan(typeof(PersonMappingConfig).Assembly); // regitser (mapster) mapping profiles
 
@@ -50,6 +54,12 @@ builder.Services.AddHealthChecks()    // adding health checks for mssqldb
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 builder.Services.AddScoped<LeaveBalanceResetJob>();
+
+
+// register hangfire for backgroundJob
+//builder.Services.AddHangfire(config =>
+//    config.UseSqlServerStorage(builder.Configuration.GetConnectionString("HangFireDatabase")));
+//builder.Services.AddHangfireServer();
 
 var app = builder.Build();
 
@@ -102,11 +112,21 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+//app.UseHangfireDashboard("/hangfire");
+
+//RecurringJob.AddOrUpdate<LeaveCheckJob>(            // Register the recurring job here
+//    "check-leave-return",
+//    job => job.ExecuteAsync(),
+//    "38 21 * * *"
+//);
+
 app.MapControllers();
 
 app.UseHealthChecks("/health", new HealthCheckOptions
 {
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
+
+
 
 app.Run();

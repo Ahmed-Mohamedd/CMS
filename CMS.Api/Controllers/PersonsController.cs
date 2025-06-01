@@ -1,4 +1,5 @@
 ﻿
+using System.Threading;
 using CMS.Application.Features.Persons.Commands.CreatePerson;
 using CMS.Application.Features.Persons.Commands.UpdatePerson;
 using CMS.Application.Features.Persons.DTOs;
@@ -7,6 +8,7 @@ using CMS.Application.Features.Persons.Queries.GetPersonByMilitaryNumber;
 using CMS.Application.Features.Persons.Queries.GetPersonByNationalId;
 using CMS.Application.Features.Persons.Queries.GetPersons;
 using CMS.Application.Features.Persons.Queries.SearchingPerson;
+using CMS.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +21,12 @@ namespace CMS.Api.Controllers
     {
 
         private readonly IMediator _mediator;
+        private readonly ILeaveService _leaveService;
 
-        public PersonsController(IMediator mediator)
+        public PersonsController(IMediator mediator , ILeaveService leaveService)
         {
             _mediator = mediator;
+            _leaveService = leaveService;
         }
 
         [HttpPost]
@@ -78,6 +82,13 @@ namespace CMS.Api.Controllers
         {
             var result = await _mediator.Send(getPersonsQuery);
             return Ok(result);
+        }
+        [HttpPut("UpdateAbsence")]
+        public async Task<IActionResult> UpdatePersonAbsence()
+        {
+            // This method is used to update the absence status of persons based on their latest leave records.
+            await _leaveService.UpdateLeaveStatusAsync(CancellationToken.None);
+            return Ok();
         }
 
 
