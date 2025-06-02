@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CMS.Application.Common.CQRS;
 using CMS.Application.Features.Persons.DTOs;
 using CMS.Domain.Entities;
+using CMS.Domain.Entities.LeaveEntities;
 using CMS.Domain.Interfaces;
 
 namespace CMS.Application.Features.Persons.Commands.CreatePerson
@@ -55,7 +56,25 @@ namespace CMS.Application.Features.Persons.Commands.CreatePerson
                 {
                     PersonId = person.Id
                 };
+                var leaveBalanceCasualForNco = new LeaveBalance
+                {
+                    PersonId = person.Id,
+                    LeaveTypeId = 8,
+                    TakenDays = 0,
+                    TotalDays = 7,
+                    Year = person.JoinDateToUnit!.Value.Year
+                };
+                var leaveBalanceAnnualForNco = new LeaveBalance
+                {
+                    PersonId = person.Id,
+                    LeaveTypeId = 9,
+                    TakenDays = 0,
+                    TotalDays = 30,
+                    Year = person.JoinDateToUnit!.Value.Year
+                };
                 await context.Ncos.AddAsync(nco);
+                await context.LeaveBalance.AddAsync(leaveBalanceCasualForNco);
+                await context.LeaveBalance.AddAsync(leaveBalanceAnnualForNco);
             }
             if (cmd.Person.PersonTypeId == 3)
             {
@@ -63,7 +82,26 @@ namespace CMS.Application.Features.Persons.Commands.CreatePerson
                 {
                     PersonId = person.Id
                 };
+                var leaveBalanceCasualForOfficer = new LeaveBalance
+                {
+                    PersonId = person.Id,
+                    LeaveTypeId = 8,
+                    TakenDays = 0,
+                    TotalDays = 7,
+                    Year = person.JoinDateToUnit!.Value.Year
+                };
+                var leaveBalanceAnnualForOfficer = new LeaveBalance
+                {
+                    PersonId = person.Id,
+                    LeaveTypeId = 9,
+                    TakenDays = 0,
+                    TotalDays = 30,
+                    Year = person.JoinDateToUnit!.Value.Year
+                };
+
                 await context.Officers.AddAsync(officer);
+                await context.LeaveBalance.AddAsync(leaveBalanceCasualForOfficer);
+                await context.LeaveBalance.AddAsync(leaveBalanceAnnualForOfficer);
             }
         }
     }
