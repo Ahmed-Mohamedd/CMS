@@ -9,6 +9,7 @@ using CMS.Domain.Interfaces;
 using CMS.Infrastructure.Data;
 using CMS.Infrastructure.Repositories;
 using CMS.Infrastructure.Services;
+using FluentValidation;
 using Hangfire;
 using HealthChecks.UI.Client;
 using Mapster;
@@ -43,7 +44,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
     cfg.AddOpenBehavior(typeof(ValidationBehaviour<,>));
 });
-
+builder.Services.AddValidatorsFromAssembly(typeof(ValidationBehaviour<,>).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -52,7 +53,6 @@ builder.Services.AddHealthChecks()    // adding health checks for mssqldb
     .AddSqlServer(builder.Configuration.GetConnectionString("MSSQlConnection"));
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
-
 builder.Services.AddScoped<LeaveBalanceResetJob>();
 
 
