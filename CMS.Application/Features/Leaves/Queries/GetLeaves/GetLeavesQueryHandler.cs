@@ -25,17 +25,17 @@ namespace CMS.Application.Features.Leaves.Queries.GetLeaves
             if (request.LeaveTypeId.HasValue)
                 query = query.Where(l => l.LeaveTypeId == request.LeaveTypeId.Value);
 
-            if (request.PersonId.HasValue)
-                query = query.Where(l => l.PersonId == request.PersonId.Value);
+            if (!string.IsNullOrWhiteSpace(request.PersonName))
+                query = query.Where(l => l.Person.FullName.Contains(request.PersonName));
 
             if (request.Year.HasValue)
                 query = query.Where(l => l.Year == request.Year.Value);
 
             if (request.FromDate.HasValue)
-                query = query.Where(l => l.DepartDate >= request.FromDate.Value);
+                query = query.Where(l => l.DepartDate.Date >= request.FromDate.Value);
 
             if (request.ToDate.HasValue)
-                query = query.Where(l => l.ReturnDate <= request.ToDate.Value);
+                query = query.Where(l => l.ReturnDate.Date <= request.ToDate.Value);
 
             var totalCount = await query.CountAsync(cancellationToken);
 

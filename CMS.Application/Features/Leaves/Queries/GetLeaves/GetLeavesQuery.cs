@@ -14,7 +14,7 @@ namespace CMS.Application.Features.Leaves.Queries.GetLeaves
         int? LeaveTypeId,
         DateTime? FromDate,
         DateTime? ToDate,
-        Guid? PersonId,
+        string? PersonName,
         int? Year,
         int PageIndex = 1,
         int PageSize = 20
