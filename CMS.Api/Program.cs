@@ -17,7 +17,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add Hangfire services
+// Add Hangfire services .  register hangfire for backgroundJob
 builder.Services.AddHangfire(config =>
     config.UseSqlServerStorage(builder.Configuration.GetConnectionString("MSSQlConnection")));
 
@@ -56,15 +56,15 @@ builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 builder.Services.AddScoped<LeaveBalanceResetJob>();
 
 
-// register hangfire for backgroundJob
-//builder.Services.AddHangfire(config =>
-//    config.UseSqlServerStorage(builder.Configuration.GetConnectionString("HangFireDatabase")));
-//builder.Services.AddHangfireServer();
 
 var app = builder.Build();
 
+
+
 // Enable Hangfire dashboard 
-app.UseHangfireDashboard();
+app.UseHangfireDashboard("/hangfire");
+
+#region BackgroundJobs
 
 // Schedule the job to run yearly on July 1st at midnight
 RecurringJob.AddOrUpdate<LeaveBalanceResetJob>(
@@ -76,6 +76,10 @@ RecurringJob.AddOrUpdate<LeaveBalanceResetJob>(
         TimeZone = TimeZoneInfo.Local
     }
 );
+
+
+#endregion
+
 
 #region Update db
 
@@ -112,13 +116,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-//app.UseHangfireDashboard("/hangfire");
 
-//RecurringJob.AddOrUpdate<LeaveCheckJob>(            // Register the recurring job here
-//    "check-leave-return",
-//    job => job.ExecuteAsync(),
-//    "38 21 * * *"
-//);
 
 app.MapControllers();
 
