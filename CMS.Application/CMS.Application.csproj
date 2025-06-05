@@ -21,8 +21,4 @@
     <ProjectReference Include="..\CMS.Infrastructure\CMS.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Leaves\Queries\" />
-  </ItemGroup>
-
 </Project>

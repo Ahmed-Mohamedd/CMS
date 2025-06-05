@@ -4,6 +4,8 @@ using CMS.Application.Features.Leaves.Commands.AddLeave;
 using CMS.Application.Features.Leaves.Commands.DeleteLeave;
 using CMS.Application.Features.Leaves.Commands.UpdateLeave;
 using CMS.Application.Features.Leaves.DTOs;
+using CMS.Application.Features.Leaves.Queries.GetLeaves;
+using CMS.Application.Features.Persons.Queries.GetPersons;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +22,18 @@ namespace CMS.Api.Controllers
         {
             _mediator = mediator;
         }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetLeaves([FromQuery] GetLeavesQuery getLeavesQuery)
+        {
+            var result = await _mediator.Send(getLeavesQuery);
+            return Ok(result);
+        }
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> CreateLeave([FromBody] AddLeaveDto dto)

@@ -16,7 +16,7 @@ namespace CMS.Application.Features.Persons.Queries.GetPersons
     {
         public async Task<PaginatedResult<PersonDto>> Handle(GetPersonsQuery request, CancellationToken cancellationToken)
         {
-            var query = context.Persons.AsQueryable();
+            var query = context.Persons.AsNoTracking().AsQueryable();
 
             if (request.BranchId.HasValue)
                 query = query.Where(p => p.BranchId == request.BranchId.Value);
