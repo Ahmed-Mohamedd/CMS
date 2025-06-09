@@ -13,13 +13,18 @@ namespace CMS.Application.Features.Branches.Mapping
     {
         public void Register(TypeAdapterConfig config)
         {
+            config.NewConfig<Person, PersonDto>()
+                .Map(dest => dest.IsAbsent, src => src.IsAbsent)
+                .Map(des => des.PersonType, src => src.PersonType.Name)
+                .Map(dest => dest.FullName, src => src.FullName);
+
             config.NewConfig<Branch, BranchDto>()
                 .Map(des => des.Leader, src => src.Leader.Person.FullName);
 
             config.NewConfig<Branch, BranchWithPersonsDto>()
-                  .Map(des => des.Leader, src => src.Leader.Person.FullName)
-                  .Map(des => des.Persons, src => src.Persons.Select(fn => new PersonDto
-                                                                        (fn.FullName)));
+                  .MapToConstructor(true)
+                  .Map(des => des.Leader, src => src.Leader.Person.FullName);
+
         }
     }
 }

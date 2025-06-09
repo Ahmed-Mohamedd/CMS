@@ -19,15 +19,20 @@ namespace CMS.Application.Features.Branches.Queries.GetPersonsWithSpecificBranch
         {
             var query = context.Branches.Where(b => b.Id == request.Id)
                                .Include(x => x.Leader)
-                               .ThenInclude(x => x.Person);
+                                 .ThenInclude(l => l.Person)
+                               .Include(x => x.Persons)
+                                 .ThenInclude(p => p.PersonType);
+
 
             var totalCount = await query.CountAsync(cancellationToken);
 
-            var data = await query.OrderBy(x => x.Name)
+            var dataQuery = await query.OrderBy(x => x.Name)
                             .Skip((request.PageIndex - 1) * request.PageSize)
                             .Take(request.PageSize)
-                            .ProjectToType<BranchWithPersonsDto>()
                             .ToListAsync(cancellationToken);
+
+            var data = dataQuery.Adapt<List<BranchWithPersonsDto>>();
+
 
             return new PaginatedResult<BranchWithPersonsDto>(request.PageIndex, request.PageSize, totalCount, data);
         }

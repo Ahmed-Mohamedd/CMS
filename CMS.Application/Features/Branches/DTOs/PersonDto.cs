@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace CMS.Application.Features.Branches.DTOs
 {
-    public record PersonDto(
-        string? FullName);
+    public class PersonDto
+    {
+        public string? FullName { get; set; }
+        public bool IsAbsent { get; set; }
+        public string? PersonType { get; set; }
+    }
+        
+
     
 }
